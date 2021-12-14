@@ -1,0 +1,20 @@
+digraph Tree {
+node [shape=box, style="filled", color="black"] ;
+0 [label="recall <= 0.011\ngini = 0.639\nsamples = 37100\nvalue = [729, 13532, 6301, 16538]\nclass = none", fillcolor="#fae6fc"] ;
+1 [label="gini = 0.0\nsamples = 16518\nvalue = [0, 0, 0, 16518]\nclass = none", fillcolor="#d739e5"] ;
+0 -> 1 [labeldistance=2.5, labelangle=45, headlabel="True"] ;
+2 [label="accuracy <= 0.898\ngini = 0.473\nsamples = 20582\nvalue = [729, 13532, 6301, 20]\nclass = large", fillcolor="#a2f29b"] ;
+0 -> 2 [labeldistance=2.5, labelangle=-45, headlabel="False"] ;
+3 [label="num_train <= 527.5\ngini = 0.376\nsamples = 5997\nvalue = [57, 1401, 4525, 14]\nclass = medium", fillcolor="#78bced"] ;
+2 -> 3 ;
+4 [label="gini = 0.295\nsamples = 5155\nvalue = [57, 839, 4247, 12]\nclass = medium", fillcolor="#63b2ea"] ;
+3 -> 4 ;
+5 [label="gini = 0.445\nsamples = 842\nvalue = [0, 562, 278, 2]\nclass = large", fillcolor="#a2f29b"] ;
+3 -> 5 ;
+6 [label="necm25 <= 0.233\ngini = 0.291\nsamples = 14585\nvalue = [672, 12131, 1776, 6]\nclass = large", fillcolor="#6aea5f"] ;
+2 -> 6 ;
+7 [label="gini = 0.264\nsamples = 626\nvalue = [528, 98, 0, 0]\nclass = extra_large", fillcolor="#ea985e"] ;
+6 -> 7 ;
+8 [label="gini = 0.241\nsamples = 13959\nvalue = [144, 12033, 1776, 6]\nclass = large", fillcolor="#64e958"] ;
+6 -> 8 ;
+}
