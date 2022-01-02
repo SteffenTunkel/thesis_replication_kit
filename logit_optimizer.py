@@ -1,7 +1,6 @@
-import matplotlib.pyplot as plt
+# the required packages are installed at the beginning of the 'replication_notebook.ipynb'
 import numpy as np
 import pandas as pd
-import seaborn as sns
 from sklearn.model_selection import KFold
 from sklearn.linear_model import LogisticRegression
 import time
@@ -69,14 +68,12 @@ def cross_validation(model, null_model, X, y, folds=5):
 
 def cv_wrapper(X, y, c, l1, num_iter):
     """Runs the CV experiment and returns the result DataFrame."""
-    print(f"c:{c}, l1:{l1}")
-    columns = ["c", "l1", "adj_pR2", "adj_weighted_pR2", "num_coef", "time"]
-    start_time = time.time()
+    columns = ["c", "l1", "adj_pR2", "adj_weighted_pR2", "num_coef"]
     model = LogisticRegression(penalty="elasticnet", solver="saga", max_iter=num_iter, C=c,
                                l1_ratio=l1, fit_intercept=True, random_state=0)
     null_model = LogisticRegression(max_iter=num_iter, solver="saga", fit_intercept=True, random_state=0)
     adj_pR2, adj_weighted_pR2, num_coef = cross_validation(model, null_model, X, y, folds=3)
-    result = pd.Series(data=(c, l1, adj_pR2, adj_weighted_pR2, num_coef, (time.time() - start_time)), index=columns)
+    result = pd.Series(data=(c, l1, adj_pR2, adj_weighted_pR2, num_coef), index=columns)
     return result
 
 
@@ -89,7 +86,7 @@ def run_grid_search(input_file, output_file):
     y = y.cat.codes.astype(int)
     X = df.drop("target", axis=1)
 
-    result_columns = ["c", "l1", "adj_pR2", "adj_weighted_pR2", "num_coef", "time"]
+    result_columns = ["c", "l1", "adj_pR2", "adj_weighted_pR2", "num_coef"]
 
     Carr = [1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1, 1e1, 1e2, 1e3]
     L1arr = [0.0, 0.2, 0.4, 0.6, 0.8, 1.0]
@@ -98,16 +95,21 @@ def run_grid_search(input_file, output_file):
     overall_start_time = time.time()
     config_tuple = []
     results = []
-    for ratio in L1arr:
-        for reg_strength in Carr:
+
+    for reg_strength in Carr:
+        for ratio in L1arr:
             config_tuple.append([reg_strength, ratio])
-    for reg_strength, ratio in config_tuple:
+
+    for i in range(len(config_tuple)):
+        reg_strength, ratio = config_tuple[i]
+        print(f'{i/len(config_tuple)*100:4.1f}% done | current parameters - strength: {reg_strength} ratio: {ratio}')
         results.append(cv_wrapper(X, y, reg_strength, ratio, iterations))
-    print(f"time needed: {time.time() - overall_start_time}")
+    print(f"time needed: {time.time() - overall_start_time:0.2f}s")
 
     result_array = np.array(results).reshape(-1, len(result_columns))
     df = pd.DataFrame(result_array, columns=result_columns)
     df.to_csv(output_file, mode='w', index=False)
+
 
 if __name__ == "__main__":
     run_grid_search("data/train_data.csv", "data/logit_optim_grid_search.csv")
