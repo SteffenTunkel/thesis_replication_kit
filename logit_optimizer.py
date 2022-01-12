@@ -39,8 +39,8 @@ def adj_mcfadden_r2_scorer(model, null_model, x_test, y_test):
         adj_pseudo_r2 = -np.inf
         weighted_adj_pseudo_r2 = -np.inf
     else:
-        adj_pseudo_r2 = 1 - (full_log_likelihood * np.sum(model.coef_ != 0) / null_log_likelihood)
-        weighted_adj_pseudo_r2 = 1 - (weighted_full_ll * np.sum(model.coef_ != 0) / weighted_null_ll)
+        adj_pseudo_r2 = 1 - ((full_log_likelihood - np.sum(model.coef_ != 0)) / null_log_likelihood)
+        weighted_adj_pseudo_r2 = 1 - ((weighted_full_ll - np.sum(model.coef_ != 0)) / weighted_null_ll)
 
     return adj_pseudo_r2, weighted_adj_pseudo_r2
 
