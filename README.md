@@ -2,7 +2,7 @@
 This repository serves as replication kit for the master thesis: *"Are performance metrics suitable indicators for the cost saving potential of defect prediction models? An exploratory analysis"*.
 
 ## Thesis Abstract
-Defect prediction models try to lead the software quality assurance resources by predicting the location of defects in the software project.
+Defect prediction models try to lead the software quality assurance resources by predicting the location of defects in a software project.
 Through this, defect prediction models have the potential to be cost saving, which is the main reason to apply them in practice.
 For the assessment of the quality of defect prediction models, a variety of performance metrics can be used.
 As the purpose of defect prediction is cost saving, it is vital to know which of these metrics can be used as an indicator for the cost saving potential.
